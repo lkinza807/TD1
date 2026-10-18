@@ -1,0 +1,37 @@
+Ce projet en Python résout un problème de transport (distribution de conteneurs depuis des dépôts vers des magasins) en minimisant le coût total.
+Il utilise une métaheuristique (la Recherche Tabou) et valide le résultat avec une énumération exhaustive.
+
+1- Les Données du problème :
+Les données (coûts, stocks disponibles, demandes) :
+*   Coûts : Matrice `cout` (2x3)
+*   Stocks : Liste `stock` (2 dépôts)
+*   Demandes : Liste `demande` (3 magasins)
+
+2- Fonctionnement du code :
+
+Le code s'articule autour de plusieurs étapes clés :
+
+1.  solution_initiale() : Génère une première solution réalisable de base en utilisant la méthode du Coin Nord-Ouest (North-West Corner).
+2.  recherche_tabou() :
+    *   Explore un voisinage en effectuant des permutations sur des cycles de 2x2 (ce qui préserve les marges de stock et de demande).
+    *   Utilise une liste tabou (`deque`) pour éviter de revenir sur des solutions récentes et éviter les cycles infinis.
+    *   Intègre un critère d'aspiration (si un voisin tabou est meilleur que le meilleur global, on l'accepte).
+    *   S'arrête après un nombre d'itérations défini ou si la solution stagne.
+3.  verification_exacte() :
+    *   Utilise la récursivité pour énumérer toutes les solutions possibles.
+
+3- Résultat :
+Solution initiale : [[4, 4, 0], [0, 1, 8]]  coût = 55
+
+Résultat de la Recherche Tabou
+  D1 -> M1 : 4 containers
+  D1 -> M2 : 4 containers
+  D1 -> M3 : 0 containers
+  D2 -> M1 : 0 containers
+  D2 -> M2 : 1 containers
+  D2 -> M3 : 8 containers
+Coût total minimal trouvé par Tabou : 55
+
+ Vérification Exacte
+Meilleure solution exacte : [[4, 4, 0], [0, 1, 8]]
+Coût exact minimal : 55
