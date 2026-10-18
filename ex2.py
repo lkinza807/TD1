@@ -76,38 +76,31 @@ def verification_exacte():
     meilleur = [None]
 
     def rec(i, j, x, s, d):
-        # Arrêt si on sort des limites de la matrice
         if i >= m or j >= n:
             return
 
-        # Si on est sur la dernière cellule (en bas à droite)
         if i == m - 1 and j == n - 1:
-            if s[i] == d[j]:  # Vérification de sécurité
+            if s[i] == d[j]:  
                 x[i][j] = s[i]
                 if meilleur[0] is None or f(x) < f(meilleur[0]):
                     meilleur[0] = [l[:] for l in x]
             return
 
-        # Le maximum qu'on peut allouer à cette cellule
         q = min(s[i], d[j])
 
-        # Option 1 : On alloue le maximum (q)
         x[i][j] = q
         s[i] -= q
         d[j] -= q
 
-        # On avance (ligne suivante si stock épuisé, sinon colonne suivante)
         if s[i] == 0:
             rec(i + 1, j, x, s, d)
         else:
             rec(i, j + 1, x, s, d)
 
-        # On annule le choix (backtracking)
         s[i] += q
         d[j] += q
         x[i][j] = 0
 
-        # Option 2 : On alloue 0 (seulement si on n'a pas déjà alloué 0)
         if q > 0:
             x[i][j] = 0
             if s[i] == 0:
